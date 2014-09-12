@@ -50,6 +50,7 @@ app.post('/category', function(req, res) {
 var exclusiveFlag = false;
 var port = process.env.PORT || 5577;
 var server = app.listen(port, function() {
+  call('/image_borrow');
 	console.log('Server start...');
 	var weekly = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 2}, function(){
       exclusiveFlag = true;

@@ -24,6 +24,15 @@ var en = new bot({
 	"userAgent": "zh.asoiaf.image",    
 	"concurrency": 1             
 });
+var got = new bot({
+	"server": "gameofthrones.wikia.com", 
+	"path": "",                  
+	"debug": true,               
+	"username": process.env.USERNAME,         
+	"password": process.env.PASSWORD,          
+	"userAgent": "zh.asoiaf.image",    
+	"concurrency": 1             
+})
 var lg = false;
 
 
@@ -44,11 +53,22 @@ var image_borrow = function(){
 				}
 				try{
 					_getAllImage(en,true,'json',function(){
-						console.log('done');
+						console.log('done for En');
 					});				}catch(err){
 					try{
 						_getAllImage(en,true,'json',function(){
-							console.log('done');
+							console.log('done for En');
+						});					}catch(err){
+						return
+					}
+				}
+				try{
+					_getAllImage(got,true,'json',function(){
+						console.log('done for Got');
+					});				}catch(err){
+					try{
+						_getAllImage(got,true,'json',function(){
+							console.log('done for Got');
 						});					}catch(err){
 						return
 					}
@@ -63,7 +83,7 @@ var image_borrow = function(){
    * 
    * move all images
    */ 
-   var read = function(data, res) {
+   var read = function(client, data, res) {
    	var images = data.query.allimages;
    	for (var iid in images) {
    		var image = images[iid];
@@ -93,7 +113,7 @@ var image_borrow = function(){
 		      						zh.uploadByUrl(stash[index].name, stash[index].url, 'zh.asoiaf.image: image migrated from '+stash[index].descriptionurl /* or extraParams */, function(){
 			      						//console.log('uploaded');
 			      					});
-			      					zh.edit('File:'+stash[index].name, '{{Awoiaf}}', 'zh.asoiaf.image: image migrated from '+stash[index].descriptionurl , function(){
+			      					zh.edit('File:'+stash[index].name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+stash[index].descriptionurl , function(){
 			      						//console.log(' Migrated');
 			      					});
 
@@ -178,12 +198,12 @@ var image_borrow = function(){
 				      		callApi(err, apiCallback);
 				      	} else {
 				      		if (data['query-continue']) {
-				      			read(data, res);
+				      			read(client, data, res);
 				      			log('query-continue');
 				      			reqAll.params.aifrom = data['query-continue'].allimages.aifrom;
 				      			callApi('', apiCallback);
 				      		} else {
-				      			read(data, res);
+				      			read(client, data, res);
 				      			writeFile(res, 'dict-all', format);
 				      			if (callback) {
 				      				callback(res);
