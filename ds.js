@@ -95,7 +95,7 @@ var ds = function(){
 						        // for (var m=0 ; m<arr.length;m++){
 						        // 	temp = temp + capitaliseFirstLetter(arr[m]);
 						        // }
-						        var str = "{{DEFAULTSORT:"+temp+"}}";	
+						        var str = "{{DEFAULTSORT:"+temp+"|noerror}}";	
 						        if (my_ns != 0 && my_ns != 114 ){
 						        	str = "<noinclude>"+str+"</noinclude>";
 						        }
