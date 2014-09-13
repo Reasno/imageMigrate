@@ -51,12 +51,13 @@ var exclusiveFlag = false;
 var port = process.env.PORT || 5577;
 var server = app.listen(port, function() {
 	console.log('Server start...');
-	var weekly = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 2}, function(){
+  call('/redirect');
+	var weekly = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 1}, function(){
 	    exclusiveFlag = true;
 		call('/image_borrow');
 	    
 	});
-	var weeklyWindowClosure = schedule.scheduleJob({hour: 15, minute: 20, dayOfWeek: 2}, function(){
+	var weeklyWindowClosure = schedule.scheduleJob({hour: 15, minute: 20, dayOfWeek: 1}, function(){
 	  exclusiveFlag = false;
 	});
 	/* daily task */
