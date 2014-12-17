@@ -48,7 +48,7 @@ app.post('/category', function(req, res) {
   }
 });
 var exclusiveFlag = false;
-var debug = true;
+var debug = false;
 var port = process.env.PORT || 5577;
 var server = app.listen(port, function() {
 	console.log('Server start...');
@@ -62,14 +62,14 @@ var server = app.listen(port, function() {
 	    
 	});
 	var weeklyWindowClosure = schedule.scheduleJob({hour: 15, minute: 20, dayOfWeek: 1}, function(){
-	  exclusiveFlag = false;
+		exclusiveFlag = false;
 	});
 	/* daily task */
-	var daily = schedule.scheduleJob({hour: 2, minute: 30}, function(){
+	var daily = schedule.scheduleJob({hour: 4, minute: 30}, function(){
 	  exclusiveFlag = true;
 	  call('/redirect');
 	});
-	var dailyWindowclosure = schedule.scheduleJob({hour: 3, minute: 20}, function(){
+	var dailyWindowclosure = schedule.scheduleJob({hour: 5, minute: 20}, function(){
 	  exclusiveFlag = false;
 	});
 	var hourly = schedule.scheduleJob({minute: 15}, function(){
