@@ -48,12 +48,12 @@ app.post('/category', function(req, res) {
   }
 });
 var exclusiveFlag = false;
-var debug = false;
+var debug = true;
 var port = process.env.PORT || 5577;
 var server = app.listen(port, function() {
 	console.log('Server start...');
 	if (debug){
-		call('/redirect');
+		call('/image_borrow');
 		return;
 	}
 	var weekly = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 1}, function(){

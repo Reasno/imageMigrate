@@ -7,7 +7,7 @@
 var bot = require('nodemw');
 // read config from external file
 var zh = new bot({
-	"server": "zh.asoiaf.wikia.com", 
+	"server": "asoiaf.huiji.wiki", 
 	"path": "",                  
 	"debug": true,               
 	"username": process.env.USERNAME,         

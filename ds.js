@@ -6,7 +6,7 @@
 /* Please ignore all dict prototype. It is copied from Chenyang‘s zh.asoiaf.dict */
 var bot = require('nodemw');
 var client = new bot({
-	"server": "zh.asoiaf.wikia.com", 
+	"server": "asoiaf.huiji.wiki", 
 	"path": "",                  
 	"debug": true,               
 	"username": process.env.USERNAME,         

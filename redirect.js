@@ -9,7 +9,7 @@
 var bot = require('nodemw');  
 var isBot = true;
 var client = new bot({
-  "server": "zh.asoiaf.wikia.com", 
+  "server": "asoiaf.huiji.wiki", 
   "path": "",                  
   "debug": true,               
   "username": process.env.USERNAME,         

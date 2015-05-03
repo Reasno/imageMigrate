@@ -1,5 +1,5 @@
 {
-      "server": "zh.asoiaf.wikia.com", 
+      "server": "asoiaf.huiji.wiki", 
       "path": "",                  
       "debug": true,               
       "username": process.env.USERNAME,         
