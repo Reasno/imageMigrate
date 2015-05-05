@@ -16,7 +16,7 @@ var zh = new bot({
 	"concurrency": 1             
 });
 var en = new bot({
-	"server": "awoiaf.westeros.org", 
+	"server": "zh.asoiaf.wikia.com", 
 	"path": "",                  
 	"debug": true,               
 	"username": process.env.EN_USERNAME,         
@@ -34,15 +34,11 @@ var got = new bot({
 	"concurrency": 1             
 })
 var lg = false;
-
-
 var image_borrow = function(){
-	var stash = [];
 	var self = this;	
 	self.execute = function() {
 		try{
-
-			zh.logIn(function(data){
+			zh.logIn(function(err, data){
 				console.log(data);
 				var login  = JSON.parse(JSON.stringify(data)) ;
 				if(login.result == 'Success'){
@@ -62,17 +58,17 @@ var image_borrow = function(){
 						return
 					}
 				}
-				try{
-					_getAllImage(got,true,'json',function(){
-						console.log('done for Got');
-					});				}catch(err){
-					try{
-						_getAllImage(got,true,'json',function(){
-							console.log('done for Got');
-						});					}catch(err){
-						return
-					}
-				}
+				// try{
+				// 	_getAllImage(got,true,'json',function(){
+				// 		console.log('done for Got');
+				// 	});				}catch(err){
+				// 	try{
+				// 		_getAllImage(got,true,'json',function(){
+				// 			console.log('done for Got');
+				// 		});					}catch(err){
+				// 		return
+				// 	}
+				// }
 				
 			});
 		}catch(err){
@@ -84,51 +80,22 @@ var image_borrow = function(){
    * move all images
    */ 
    var read = function(client, data, res) {
+
    	var images = data.query.allimages;
    	for (var iid in images) {
    		var image = images[iid];
    		var name = image.name;
    		var url = image.url;
    		var desc = image.descriptionurl;
-   		stash.push(image);
-   		// console.log('passing'+name);
    		if (url != undefined) {
-	      	//do we have this?
-	      	try{
-	      		var params = {
-	      			action :'query',
-	      			titles : 'File:'+name,
-	      			format : 'json'
-	      		}
-
-	      		zh.api.call(params,function(info,next,data){
-	      			//console.log(data);we
-	      			if(data.query.pages['-1']){
-	      				//console.log('not existed');
-		      			for (var index = 0; index < stash.length; index++) {
-		      				//console.log(('File:'+stash[index].name) +'\\\\\\\\\\\\'+data.query.pages['-1'].title );	
-		      				var str = data.query.pages['-1'].title;
-		      				if(('File:'+stash[index].name) == str.replace(/ /g,'_')){
-		      						//console.log(stash[index].name +" ready uploadByUrl");	      				
-		      						zh.uploadByUrl(stash[index].name, stash[index].url, 'zh.asoiaf.image: image migrated from '+stash[index].descriptionurl /* or extraParams */, function(){
-			      						//console.log('uploaded');
-			      					});
-			      					zh.edit('File:'+stash[index].name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+stash[index].descriptionurl , function(){
-			      						//console.log(' Migrated');
-			      					});
-
-		      				}
-		      	
-		      				
-		      			}
-					}
-	      		});
-	      	}catch(err){
-
-	      	}
-
-	    } 
-	}
+   			zh.uploadByUrl(name, url, 'zh.asoiaf.image: image migrated from '+desc /* or extraParams */, function(){
+  				console.log('uploaded');
+  			});
+  			// zh.edit('File:'+name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+desc , function(){
+  			// 	console.log(' Migrated');
+  			// });
+   		}
+	}    
 	return res;
    };
 
@@ -184,7 +151,7 @@ var image_borrow = function(){
 			   		client.api.call(reqAll.params, apiCallback); 
 				    reqAll.timeout = setTimeout(waitTimeout, 100000); // wait for 10 seconds until TIMEOUT
 				};
-				var apiCallback = function(info, next, data) {
+				var apiCallback = function(err, info, next, data) {
 				      if (!reqAll.timeout) { // timeout has been cleared, this callback is called after TIMEOUT, discard it
 				      	log('Callback returned after TIMEOUT, discard it...');
 				      	return;
@@ -200,7 +167,11 @@ var image_borrow = function(){
 				      		if (data['query-continue']) {
 				      			read(client, data, res);
 				      			log('query-continue');
-				      			reqAll.params.aifrom = data['query-continue'].allimages.aifrom;
+				      			if (data['query-continue'].allimages.aicontinue){
+				      				reqAll.params.aifrom = data['query-continue'].allimages.aicontinue;
+				      			} else {
+				      				reqAll.params.aifrom = data['query-continue'].allimages.aifrom;
+				      			}
 				      			callApi('', apiCallback);
 				      		} else {
 				      			read(client, data, res);

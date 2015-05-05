@@ -8,7 +8,7 @@
     "body-parser": "^1.6.5",
     "express": "^4.7.2",
     "node-schedule": "^0.1.13",
-    "nodemw": "^0.3.15"
+    "nodemw": "~0.5.1"
   },
   "devDependencies": {},
   "scripts": {
