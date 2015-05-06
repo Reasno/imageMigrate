@@ -83,18 +83,21 @@ var image_borrow = function(){
 
    	var images = data.query.allimages;
    	for (var iid in images) {
-   		var image = images[iid];
-   		var name = image.name;
-   		var url = image.url;
-   		var desc = image.descriptionurl;
-   		if (url != undefined) {
-   			zh.getImageInfo(name, function(err, res){
-   				if (res == ''){
-   					zh.uploadByUrl(name, url, 'zh.asoiaf.image: image migrated from '+desc /* or extraParams */, function(){
-  						console.log('uploaded');
-  					});
-  				}
-  			});
+   		if (images[iid].url != undefined) {
+   			(function(img){
+				zh.getImageInfo('File:'+img.name, function(err, res){
+	   				if (!res || !res.url){
+	   					var iname = img.name;
+	   					var iurl = img.url;
+	   					var idesc = img.descriptionurl;
+	   					console.log('uploading '+iname+' @ '+ iurl);
+	   					zh.uploadByUrl(iname, iurl, 'zh.asoiaf.image: image migrated from '+idesc /* or extraParams */, function(){
+	  						console.log('uploaded '+iname);
+	  					});
+	  				}
+	  			});
+   			})(images[iid]);
+   			
    			
   			// zh.edit('File:'+name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+desc , function(){
   			// 	console.log(' Migrated');
