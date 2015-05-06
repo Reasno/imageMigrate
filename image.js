@@ -13,7 +13,7 @@ var zh = new bot({
 	"username": process.env.USERNAME,         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1             
+	"concurrency": 500            
 });
 var en = new bot({
 	"server": "zh.asoiaf.wikia.com", 
@@ -22,7 +22,7 @@ var en = new bot({
 	"username": process.env.EN_USERNAME,         
 	"password": process.env.EN_PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1             
+	"concurrency": 5             
 });
 var got = new bot({
 	"server": "gameofthrones.wikia.com", 
@@ -31,7 +31,7 @@ var got = new bot({
 	"username": process.env.USERNAME,         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1             
+	"concurrency": 5             
 })
 var lg = false;
 var image_borrow = function(){
@@ -88,9 +88,14 @@ var image_borrow = function(){
    		var url = image.url;
    		var desc = image.descriptionurl;
    		if (url != undefined) {
-   			zh.uploadByUrl(name, url, 'zh.asoiaf.image: image migrated from '+desc /* or extraParams */, function(){
-  				console.log('uploaded');
+   			zh.getImageInfo(name, function(err, res){
+   				if (res == ''){
+   					zh.uploadByUrl(name, url, 'zh.asoiaf.image: image migrated from '+desc /* or extraParams */, function(){
+  						console.log('uploaded');
+  					});
+  				}
   			});
+   			
   			// zh.edit('File:'+name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+desc , function(){
   			// 	console.log(' Migrated');
   			// });
