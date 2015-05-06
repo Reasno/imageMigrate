@@ -10,10 +10,10 @@ var zh = new bot({
 	"server": "asoiaf.huiji.wiki", 
 	"path": "",                  
 	"debug": true,               
-	"username": process.env.USERNAME,         
+	"username": '米拉西斯',         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1             
+	"concurrency": 100             
 });
 var en = new bot({
 	"server": "zh.asoiaf.wikia.com", 
@@ -22,7 +22,7 @@ var en = new bot({
 	"username": process.env.EN_USERNAME,         
 	"password": process.env.EN_PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1             
+	"concurrency": 2             
 });
 var got = new bot({
 	"server": "gameofthrones.wikia.com", 
@@ -31,7 +31,7 @@ var got = new bot({
 	"username": process.env.USERNAME,         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1             
+	"concurrency": 10             
 })
 var lg = false;
 var image_borrow = function(){
