@@ -125,7 +125,7 @@ var image_borrow = function(){
 			   		params: {
 			   			action: 'query', 
 			   			list: 'allimages', 
-			   			aifrom : '',
+			   			aifrom : 'Zalla.png',
 			   			ailimit: (isBot) ? '5000' : '500',
 			   			format : 'json'
 			   		}, 
