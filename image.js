@@ -13,7 +13,7 @@ var zh = new bot({
 	"username": '米拉西斯',         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 100             
+	"concurrency": 1          
 });
 var en = new bot({
 	"server": "zh.asoiaf.wikia.com", 
@@ -125,7 +125,7 @@ var image_borrow = function(){
 			   		params: {
 			   			action: 'query', 
 			   			list: 'allimages', 
-			   			aifrom : 'Zalla.png',
+			   			aifrom : 'zalla.png',
 			   			ailimit: (isBot) ? '5000' : '500',
 			   			format : 'json'
 			   		}, 
