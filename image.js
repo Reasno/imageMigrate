@@ -104,11 +104,11 @@ var image_borrow = function(){
 	   					}
 	   					zh.api.call(tokenparam, function (err, token){
 	   						if (err) {
-	   							cosole.log('notoken');
+	   							console.log('notoken');
 	   							return;
 	   						}
 	   						if (!token.query || !token.query.tokens || !token.query.tokens.csrftoken){
-	   							cosole.log('notoken');
+	   							console.log('notoken');
 	   							return;
 	   						}
 	   						params.token = token.query.tokens.csrftoken;
