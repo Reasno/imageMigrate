@@ -96,11 +96,15 @@ var image_borrow = function(){
 	   						filename: iname,
 	   						url: iurl
 	   					}
-	   					zh.getToken('File:'+iname, 'edit', function (err, token){
+	   					var tokenparam = {
+	   						action: 'query',
+	   						meta:'tokens'
+	   					}
+	   					zh.api.call(tokenparam, function (err, token){
 	   						if (err) {
 	   							return;
 	   						}
-	   						params.token = token;
+	   						params.token = token.query.tokens.csrftoken;
 	   						zh.api.call(params, function (err, data){
 	   							if( data && data.result && data.result === 'Success') {
 	   								console.log('uploaded'+iname);
