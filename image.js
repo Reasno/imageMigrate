@@ -91,9 +91,22 @@ var image_borrow = function(){
 	   					var iurl = img.url;
 	   					var idesc = img.descriptionurl;
 	   					console.log('uploading '+iname+' @ '+ iurl);
-	   					zh.uploadByUrl(iname, iurl, 'zh.asoiaf.image: image migrated from '+idesc /* or extraParams */, function(){
-	  						console.log('uploaded '+iname);
-	  					});
+	   					var params = {
+	   						action: 'upload',
+	   						filename: iname,
+	   						url: iurl
+	   					}
+	   					zh.getToken('File:'+iname, 'edit', function (err, token){
+	   						if (err) {
+	   							return;
+	   						}
+	   						params.token = token;
+	   						zh.api.call(params, function (err, data){
+	   							if( data && data.result && data.result === 'Success') {
+	   								console.log('uploaded'+iname);
+	   							}
+	   						}, 'UPLOAD'); 
+	   					});
 	  				}
 	  			});
    			})(images[iid]);
