@@ -108,11 +108,11 @@ var image_borrow = function(){
 	   							console.log('notoken');
 	   							return;
 	   						}
-	   						if (!token.query || !token.query.tokens || !token.query.tokens.csrftoken){
+	   						if (!token || !token.tokens || !token.tokens.csrftoken){
 	   							console.log('notoken');
 	   							return;
 	   						}
-	   						params.token = token.query.tokens.csrftoken;
+	   						params.token = token.tokens.csrftoken;
 	   						zh.api.call(params, function (err, data){
 	   							if( data && data.result && data.result === 'Success') {
 	   								console.log('uploaded'+iname);
