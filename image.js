@@ -94,14 +94,21 @@ var image_borrow = function(){
 	   					var params = {
 	   						action: 'upload',
 	   						filename: iname,
-	   						url: iurl
+	   						url: iurl,
+	   						format:'json'
 	   					}
 	   					var tokenparam = {
 	   						action: 'query',
-	   						meta:'tokens'
+	   						meta:'tokens',
+	   						format:'json'
 	   					}
 	   					zh.api.call(tokenparam, function (err, token){
 	   						if (err) {
+	   							cosole.log('notoken');
+	   							return;
+	   						}
+	   						if (!token.query || !token.query.tokens || !token.query.tokens.csrftoken){
+	   							cosole.log('notoken');
 	   							return;
 	   						}
 	   						params.token = token.query.tokens.csrftoken;
