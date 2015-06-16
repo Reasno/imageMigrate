@@ -7,16 +7,16 @@
 var bot = require('nodemw');
 // read config from external file
 var zh = new bot({
-	"server": "asoiaf.huiji.wiki", 
+	"server": "3pz.huiji.wiki", 
 	"path": "",                  
 	"debug": true,               
 	"username": '米拉西斯',         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 1          
+	"concurrency": 100          
 });
 var en = new bot({
-	"server": "zh.asoiaf.wikia.com", 
+	"server": "zh.3pz.wikia.com", 
 	"path": "",                  
 	"debug": true,               
 	"username": process.env.EN_USERNAME,         
@@ -125,7 +125,7 @@ var image_borrow = function(){
 			   		params: {
 			   			action: 'query', 
 			   			list: 'allimages', 
-			   			aifrom : 'zalla.png',
+			   			aifrom : '',
 			   			ailimit: (isBot) ? '5000' : '500',
 			   			format : 'json'
 			   		}, 
