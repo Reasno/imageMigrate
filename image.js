@@ -103,6 +103,7 @@ var image_borrow = function(){
 	   						format:'json'
 	   					}
 	   					zh.api.call(tokenparam, function (err, token){
+	   						console.log(token);
 	   						if (err) {
 	   							console.log('notoken');
 	   							return;
