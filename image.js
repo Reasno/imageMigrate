@@ -13,7 +13,7 @@ var zh = new bot({
 	"username": '米拉西斯',         
 	"password": process.env.PASSWORD,          
 	"userAgent": "zh.asoiaf.image",    
-	"concurrency": 100          
+	"concurrency": 5          
 });
 var en = new bot({
 	"server": "zh.3pz.wikia.com", 
