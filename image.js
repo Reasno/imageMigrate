@@ -7,7 +7,7 @@
 var bot = require('nodemw');
 // read config from external file
 var zh = new bot({
-	"server": "assassinscreed.huiji.wiki", 
+	"server": "warframe.huiji.wiki", 
 	"path": "",                  
 	"debug": true,               
 	"username": '米拉西斯',         
@@ -16,7 +16,7 @@ var zh = new bot({
 	"concurrency": 5          
 });
 var en = new bot({
-	"server": "zh.assassinscreed.wikia.com", 
+	"server": "zh.warframe.wikia.com", 
 	"path": "",                  
 	"debug": true,               
 	"username": process.env.EN_USERNAME,         
