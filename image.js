@@ -41,6 +41,7 @@ var grablock = function(){
 	return true;
 }
 var releaselock = function(){
+    console.log("locked released \n");
 	locked = false;
 }
 var lg = false;
@@ -60,7 +61,8 @@ var image_borrow = function(){
 				try{
 					_getAllImage(en,true,'json','',function(){
 						console.log('done for En');
-					});				}catch(err){
+					});				
+                }catch(err){
 					try{
 						_getAllImage(en,true,'json','',function(){
 							console.log('done for En');
@@ -84,10 +86,11 @@ var image_borrow = function(){
 
    	var images = data.query.allimages;
    	for (var iid in images) {
-   		grablock();
+   		
 		
    		if (images[iid].url != undefined) {
    			(function(img){
+                grablock();
 				zh.getImageInfo('File:'+img.name, function(err, res){
 	   				if (!res || !res.url){
 	   					var iname = img.name;
