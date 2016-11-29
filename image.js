@@ -7,7 +7,7 @@
 var bot = require('nodemw');
 // read config from external file
 var zh = new bot({
-	"server": "warframe.huiji.wiki", 
+	"server": "game.huiji.wiki", 
 	"path": "",                  
 	"debug": true,               
 	"username": '米拉西斯',         
@@ -16,8 +16,8 @@ var zh = new bot({
 	"concurrency": 5          
 });
 var en = new bot({
-	"server": "zh.warframe.wikia.com", 
-	"path": "",                  
+	"server": "pcgamingwiki.com", 
+	"path": "/w",                  
 	"debug": true,               
 	"username": process.env.EN_USERNAME,         
 	"password": process.env.EN_PASSWORD,          
@@ -48,11 +48,11 @@ var image_borrow = function(){
 					return;
 				}
 				try{
-					_getAllImage(en,true,'json',function(){
+					_getAllImage(en,true,'json','',function(){
 						console.log('done for En');
 					});				}catch(err){
 					try{
-						_getAllImage(en,true,'json',function(){
+						_getAllImage(en,true,'json','',function(){
 							console.log('done for En');
 						});					}catch(err){
 						return
@@ -83,6 +83,7 @@ var image_borrow = function(){
 
    	var images = data.query.allimages;
    	for (var iid in images) {
+		
    		if (images[iid].url != undefined) {
    			(function(img){
 				zh.getImageInfo('File:'+img.name, function(err, res){
@@ -114,6 +115,11 @@ var image_borrow = function(){
 	   						}
 	   						params.token = token.tokens.csrftoken;
 	   						zh.api.call(params, function (err, data){
+								if (err){
+									_getAllImage(en,true,'json',iname,function(){
+                                           				     console.log('done for En');
+                                        				});
+								}
 	   							if( data && data.result && data.result === 'Success') {
 	   								console.log('uploaded'+iname);
 	   							}
@@ -139,7 +145,7 @@ var image_borrow = function(){
 	   };
 	   /**
 	   /* raw function */
-	   var _getAllImage = function(client, isBot, format, callback) {
+	   var _getAllImage = function(client, isBot, format, from, callback) {
 			   	//console.log('I am here');
 			   	var res = {
 			   		'dict': {}, 
@@ -150,7 +156,7 @@ var image_borrow = function(){
 			   		params: {
 			   			action: 'query', 
 			   			list: 'allimages', 
-			   			aifrom : '',
+			   			aifrom : from,
 			   			ailimit: (isBot) ? '5000' : '500',
 			   			format : 'json'
 			   		}, 
@@ -182,7 +188,7 @@ var image_borrow = function(){
 			   			reqAll.errCnt = 0;
 			   		}
 			   		client.api.call(reqAll.params, apiCallback); 
-				    reqAll.timeout = setTimeout(waitTimeout, 100000); // wait for 10 seconds until TIMEOUT
+				    reqAll.timeout = setTimeout(waitTimeout, 10000000); // wait for 10 seconds until TIMEOUT
 				};
 				var apiCallback = function(err, info, next, data) {
 				      if (!reqAll.timeout) { // timeout has been cleared, this callback is called after TIMEOUT, discard it
