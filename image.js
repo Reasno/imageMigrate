@@ -68,18 +68,6 @@ var image_borrow = function(){
 						return;
 					}
 				}
-				// try{
-				// 	_getAllImage(got,true,'json',function(){
-				// 		console.log('done for Got');
-				// 	});				}catch(err){
-				// 	try{
-				// 		_getAllImage(got,true,'json',function(){
-				// 			console.log('done for Got');
-				// 		});					}catch(err){
-				// 		return
-				// 	}
-				// }
-				
 			});
 		}catch(err){
 
@@ -128,12 +116,13 @@ var image_borrow = function(){
 	   						}
 	   						params.token = token.tokens.csrftoken;
 	   						zh.api.call(params, function (err, data){
+                                releaselock();
 								if (err){
 									// _getAllImage(en,true,'json',iname,function(){
          //               				     console.log('done for En');
          //            				});
          							console.log('uplod err: '+err);
-         							zh.api.call(params, null);
+         							//zh.api.call(params, null);
 								}
 	   							if( data && data.result && data.result === 'Success') {
 	   								console.log('uploaded '+iname);
@@ -147,7 +136,7 @@ var image_borrow = function(){
   			// 	console.log(' Migrated');
   			// });
    		}
-   		releaselock();
+   		
 	}    
 	return res;
    };
