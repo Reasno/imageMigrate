@@ -37,6 +37,7 @@ var locked = false;
 var grablock = function(){
 	while(locked == true);
 	locked == true;
+    console.log("locked grabbed \n");
 	return true;
 }
 var releaselock = function(){
