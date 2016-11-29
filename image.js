@@ -33,6 +33,15 @@ var got = new bot({
 	"userAgent": "zh.asoiaf.image",    
 	"concurrency": 5             
 })
+var locked = false;
+var grablock = function(){
+	while(locked == true);
+	locked == true;
+	return true;
+}
+var releaselock = function(){
+	locked = false;
+}
 var lg = false;
 var image_borrow = function(){
 	var self = this;	
@@ -54,8 +63,9 @@ var image_borrow = function(){
 					try{
 						_getAllImage(en,true,'json','',function(){
 							console.log('done for En');
-						});					}catch(err){
-						return
+						});					
+					}catch(err){
+						return;
 					}
 				}
 				// try{
@@ -75,7 +85,9 @@ var image_borrow = function(){
 
 		}
 	}
+
 	  /*
+	}
    * 
    * move all images
    */ 
@@ -83,6 +95,7 @@ var image_borrow = function(){
 
    	var images = data.query.allimages;
    	for (var iid in images) {
+   		grablock();
 		
    		if (images[iid].url != undefined) {
    			(function(img){
@@ -116,24 +129,25 @@ var image_borrow = function(){
 	   						params.token = token.tokens.csrftoken;
 	   						zh.api.call(params, function (err, data){
 								if (err){
-									_getAllImage(en,true,'json',iname,function(){
-                                           				     console.log('done for En');
-                                        				});
+									// _getAllImage(en,true,'json',iname,function(){
+         //               				     console.log('done for En');
+         //            				});
+         							console.log('uplod err: '+err);
+         							zh.api.call(params, null);
 								}
 	   							if( data && data.result && data.result === 'Success') {
-	   								console.log('uploaded'+iname);
+	   								console.log('uploaded '+iname);
 	   							}
 	   						}, 'UPLOAD'); 
 	   					});
 	  				}
 	  			});
    			})(images[iid]);
-   			
-   			
   			// zh.edit('File:'+name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+desc , function(){
   			// 	console.log(' Migrated');
   			// });
    		}
+   		releaselock();
 	}    
 	return res;
    };
@@ -188,7 +202,7 @@ var image_borrow = function(){
 			   			reqAll.errCnt = 0;
 			   		}
 			   		client.api.call(reqAll.params, apiCallback); 
-				    reqAll.timeout = setTimeout(waitTimeout, 10000000); // wait for 10 seconds until TIMEOUT
+				    reqAll.timeout = setTimeout(waitTimeout, 100000000); // wait for 10 seconds until TIMEOUT
 				};
 				var apiCallback = function(err, info, next, data) {
 				      if (!reqAll.timeout) { // timeout has been cleared, this callback is called after TIMEOUT, discard it
@@ -203,9 +217,9 @@ var image_borrow = function(){
 				      		log(err);
 				      		callApi(err, apiCallback);
 				      	} else {
+				      		read(client, data, res);
 				      		if (data['query-continue']) {
 				      			read(client, data, res);
-				      			log('query-continue');
 				      			if (data['query-continue'].allimages.aicontinue){
 				      				reqAll.params.aifrom = data['query-continue'].allimages.aicontinue;
 				      			} else {
@@ -213,8 +227,6 @@ var image_borrow = function(){
 				      			}
 				      			callApi('', apiCallback);
 				      		} else {
-				      			read(client, data, res);
-				      			writeFile(res, 'dict-all', format);
 				      			if (callback) {
 				      				callback(res);
 				      			}
