@@ -108,10 +108,12 @@ var image_borrow = function(){
 	   						console.log(token);
 	   						if (err) {
 	   							console.log('notoken');
+                                releaselock();
 	   							return;
 	   						}
 	   						if (!token || !token.tokens || !token.tokens.csrftoken){
 	   							console.log('notoken');
+                                releaselock();
 	   							return;
 	   						}
 	   						params.token = token.tokens.csrftoken;
@@ -129,7 +131,9 @@ var image_borrow = function(){
 	   							}
 	   						}, 'UPLOAD'); 
 	   					});
-	  				}
+	  				} else {
+                        releaselock();
+                    }
 	  			});
    			})(images[iid]);
   			// zh.edit('File:'+name, client==en?'{{Awoiaf}}':'{{Gotwikia}}', 'zh.asoiaf.image: image migrated from '+desc , function(){
